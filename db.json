@@ -1,5 +1,11 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": "89b2",
+      "username": "kacper",
+      "password": "1234a"
+    }
+  ],
   "quizzes": [],
   "results": []
 }
