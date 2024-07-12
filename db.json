@@ -1,11 +1,39 @@
 {
   "users": [
     {
-      "id": "89b2",
-      "username": "kacper",
-      "password": "1234a"
+      "id": "20b4",
+      "username": "adam",
+      "password": "malysz"
     }
   ],
-  "quizzes": [],
+  "quizzes": [
+    {
+      "id": "7860",
+      "title": "quiz1",
+      "questions": [
+        {
+          "question": "jak ma imie monika brodka?",
+          "options": [
+            "jan",
+            "ada",
+            "ola",
+            "monika"
+          ],
+          "correctOption": "monika"
+        },
+        {
+          "question": "ile to jest 2+2?",
+          "options": [
+            "14",
+            "22",
+            "4",
+            "41"
+          ],
+          "correctOption": "4"
+        }
+      ],
+      "userId": "20b4"
+    }
+  ],
   "results": []
 }

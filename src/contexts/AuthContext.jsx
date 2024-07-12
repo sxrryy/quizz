@@ -1,51 +1,59 @@
 import React, { createContext, useState, useEffect } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser) {
-      setUser(storedUser);
-      setIsAuthenticated(true);
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+    if (loggedInUser) {
+      setUser(loggedInUser);
     }
   }, []);
 
   const login = async (username, password) => {
-    try {
-      const response = await axios.get("http://localhost:3000/users", {
-        params: { username },
-      });
+    const response = await fetch("http://localhost:3000/users");
+    const users = await response.json();
+    const user = users.find(
+      (u) => u.username === username && u.password === password
+    );
+    if (user) {
+      setUser(user);
+      localStorage.setItem("user", JSON.stringify(user));
+      navigate("/");
+    } else {
+      alert("Invalid credentials");
+    }
+  };
 
-      if (response.data.length > 0 && response.data[0].password === password) {
-        setUser(response.data[0]);
-        setIsAuthenticated(true);
-        localStorage.setItem("user", JSON.stringify(response.data[0]));
-        return true;
-
-        return false;
-      }
-    } catch (error) {
-      console.error("Logowanie nie powiodło się.", error);
-      return false;
+  const register = async (username, password) => {
+    const response = await fetch("http://localhost:3000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+    if (response.ok) {
+      alert("Registration successful");
+      navigate("/login");
+    } else {
+      alert("Registration failed");
     }
   };
 
   const logout = () => {
     setUser(null);
-    setIsAuthenticated(false);
     localStorage.removeItem("user");
+    navigate("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-export { AuthContext, AuthProvider };

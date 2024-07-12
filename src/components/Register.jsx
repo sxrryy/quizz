@@ -1,83 +1,60 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const { register } = useContext(AuthContext);
 
-  const validateForm = () => {
-    if (username.length > 10) {
-      setError("Nazwa użytkownika nie może być dłuższa niż 10 znaków.");
-      return false;
-    }
-    if (
-      password.length < 4 ||
-      !/\d/.test(password) ||
-      !/[A-Za-z]/.test(password)
-    ) {
-      setError(
-        "Hasło musi się składać przynajmniej z 4 znaków i zawierać cyfrę oraz literę."
-      );
-      return false;
-    }
-    return true;
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
-
-    try {
-      const existingUser = await axios.get("http://localhost:3000/users", {
-        params: { username },
-      });
-
-      if (existingUser.data.length > 0) {
-        setError("Nazwa użytkownika jest już zajęta.");
-        return;
-      }
-
-      await axios.post("http://localhost:3000/users", { username, password });
-      alert("Rejestracja przebiegła pomyślnie");
-      navigate("/login");
-    } catch (error) {
-      setError("Rejestracja nie powiodła się");
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
     }
+    register(username, password);
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Rejestracja</h1>
-      <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow">
-        {error && <div className="mb-4 text-red-500">{error}</div>}
+    <div className="flex justify-center items-center h-screen">
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
+        <h2 className="text-2xl mb-4">Register</h2>
         <div className="mb-4">
-          <label className="block text-gray-700">Nazwa użytkownika</label>
+          <label className="block text-gray-700">Username</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border rounded"
+            className="w-full p-2 border border-gray-300 rounded mt-1"
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Hasło</label>
+          <label className="block text-gray-700">Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border rounded"
+            className="w-full p-2 border border-gray-300 rounded mt-1"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Confirm Password</label>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded mt-1"
             required
           />
         </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-blue-500 text-white py-2 px-4 rounded"
         >
-          Zarejestruj
+          Register
         </button>
       </form>
     </div>

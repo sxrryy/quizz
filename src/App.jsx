@@ -1,31 +1,50 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { useContext } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { AuthContext } from "./contexts/AuthContext";
 import Header from "./components/Header";
+import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import { AuthProvider } from "./contexts/AuthContext";
+import QuizList from "./components/QuizList";
+import CreateQuiz from "./components/CreateQuiz";
+import UserQuizzes from "./components/UserQuizzes";
+import EditQuiz from "./components/EditQuiz";
 
 const App = () => {
+  const { user } = useContext(AuthContext);
+
+  if (user === undefined) {
+    // Dodaj ładowanie, gdy AuthContext nie jest jeszcze zainicjowane
+    return null;
+  }
+
   return (
-    <AuthProvider>
-      <Router>
-        <Header />
+    <div>
+      <Header />
+      <div className="container mx-auto mt-10">
         <Routes>
-          <Route
-            path="/"
-            element={
-              <div className="container mx-auto p-4">
-                <h1 className="text-2xl font-bold">
-                  Witaj w mojej apce z quizami!
-                </h1>
-              </div>
-            }
-          />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/quizzes"
+            element={user ? <QuizList /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/create-quiz"
+            element={user ? <CreateQuiz /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/user-quizzes"
+            element={user ? <UserQuizzes /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/edit-quiz/:id"
+            element={user ? <EditQuiz /> : <Navigate to="/login" />}
+          />
         </Routes>
-      </Router>
-    </AuthProvider>
+      </div>
+    </div>
   );
 };
 
