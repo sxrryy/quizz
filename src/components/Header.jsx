@@ -1,40 +1,36 @@
-import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
 
-const Header = () => {
-  const { user, logout } = useContext(AuthContext);
-
+const Header = ({ user, onLogout }) => {
   return (
-    <header className="bg-blue-500 p-4 text-white">
+    <header className="bg-gray-800 p-4 text-white">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl">
-          <Link to="/">My Quiz App</Link>
-        </h1>
+        <Link to="/" className="text-lg font-bold">
+          Quiz App
+        </Link>
         <nav>
           <ul className="flex space-x-4">
-            {user ? (
+            {!user ? (
               <>
                 <li>
-                  <Link to="/quizzes">Quizzes</Link>
+                  <Link to="/login">Zaloguj</Link>
                 </li>
                 <li>
-                  <Link to="/create-quiz">Create Quiz</Link>
-                </li>
-                <li>
-                  <Link to="/user-quizzes">My Quizzes</Link>
-                </li>
-                <li>
-                  <button onClick={logout}>Logout</button>
+                  <Link to="/register">Zarejestruj</Link>
                 </li>
               </>
             ) : (
               <>
                 <li>
-                  <Link to="/login">Login</Link>
+                  <Link to="/create-quiz">Stwórz quiz</Link>
                 </li>
                 <li>
-                  <Link to="/register">Register</Link>
+                  <Link to="/my-results">Moje wyniki</Link>
+                </li>
+                <li>
+                  <Link to="/quizzes">Quizy</Link>
+                </li>
+                <li>
+                  <button onClick={onLogout}>Wyloguj</button>
                 </li>
               </>
             )}

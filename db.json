@@ -1,39 +1,76 @@
 {
   "users": [
     {
-      "id": "20b4",
-      "username": "adam",
-      "password": "malysz"
+      "id": "b99d",
+      "email": "jan@jan.pl",
+      "password": "janekjanek"
     }
   ],
   "quizzes": [
     {
-      "id": "7860",
+      "id": "dce2",
       "title": "quiz1",
       "questions": [
         {
-          "question": "jak ma imie monika brodka?",
-          "options": [
-            "jan",
-            "ada",
-            "ola",
-            "monika"
-          ],
-          "correctOption": "monika"
+          "question": "jak jak jak",
+          "correctAnswer": "tak",
+          "answers": [
+            "nie",
+            "owszem",
+            "jak",
+            "tak"
+          ]
         },
         {
-          "question": "ile to jest 2+2?",
-          "options": [
-            "14",
-            "22",
-            "4",
-            "41"
-          ],
-          "correctOption": "4"
+          "question": "o o o o",
+          "correctAnswer": "o2",
+          "answers": [
+            "moze",
+            "morze",
+            "trak",
+            "rewww"
+          ]
         }
       ],
-      "userId": "20b4"
+      "userId": "b99d"
     }
   ],
-  "results": []
+  "results": [
+    {
+      "id": "ea4a",
+      "userId": "b99d",
+      "quizId": "dce2",
+      "result": 0
+    },
+    {
+      "id": "ec26",
+      "userId": "b99d",
+      "quizId": "dce2",
+      "result": 50
+    },
+    {
+      "id": "3253",
+      "userId": "b99d",
+      "quizId": "dce2",
+      "result": 50
+    },
+    {
+      "id": "483d",
+      "userId": "b99d",
+      "quizId": "dce2",
+      "result": 0
+    },
+    {
+      "id": "8906",
+      "userId": "b99d",
+      "quizId": "dce2",
+      "result": 0
+    },
+    {
+      "id": "ffa2",
+      "userId": "b99d",
+      "quizId": "dce2",
+      "result": 50
+    }
+  ]
 }

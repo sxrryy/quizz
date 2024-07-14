@@ -1,51 +1,39 @@
-import React, { useContext } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import { AuthContext } from "./contexts/AuthContext";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "./components/Header";
-import Home from "./components/Home";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import QuizList from "./components/QuizList";
-import CreateQuiz from "./components/CreateQuiz";
-import UserQuizzes from "./components/UserQuizzes";
-import EditQuiz from "./components/EditQuiz";
+import Footer from "./components/Footer";
+import AppRouter from "./router";
 
-const App = () => {
-  const { user } = useContext(AuthContext);
+function App() {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-  if (user === undefined) {
-    // Dodaj ładowanie, gdy AuthContext nie jest jeszcze zainicjowane
-    return null;
-  }
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const handleLogin = (user) => {
+    setUser(user);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/");
+  };
 
   return (
-    <div>
-      <Header />
-      <div className="container mx-auto mt-10">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/quizzes"
-            element={user ? <QuizList /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/create-quiz"
-            element={user ? <CreateQuiz /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/user-quizzes"
-            element={user ? <UserQuizzes /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/edit-quiz/:id"
-            element={user ? <EditQuiz /> : <Navigate to="/login" />}
-          />
-        </Routes>
+    <div className="flex flex-col min-h-screen">
+      <Header user={user} onLogout={handleLogout} />
+      <div className="flex-grow">
+        <AppRouter user={user} onLogin={handleLogin} />
       </div>
+      <Footer />
     </div>
   );
-};
+}
 
 export default App;
